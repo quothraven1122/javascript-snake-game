@@ -1,0 +1,15 @@
+.chatBox {
+  width: 300px;
+  height: var(--default-height);
+  border: 4px solid black;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray-700);
+}
+.chatContainer {
+  flex: 1;
+  padding: 10px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

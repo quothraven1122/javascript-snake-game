@@ -1,0 +1,21 @@
+.chat {
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 15px;
+}
+.text {
+  font-size: 13px;
+  white-space: pre-wrap;
+  text-align: left;
+  color: black;
+}
+.p1 {
+  margin-left: auto; /* push bubble to the right */
+  background-color: white;
+}
+.p2 {
+  margin-right: auto; /* explicitly push left */
+  background-color: var(--gray-100);
+}
