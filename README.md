@@ -14,7 +14,7 @@
 ### 개요
 두 사람이 랜덤으로 매칭되어 뱀을 조종한다.    
 뱀은 맵 밖으로 나가거나, 머리가 상대의 뱀에 부딪히면 죽는다.    
-3판 2선제이고 뱀 크기는 8칸이다.     
+뱀 크기는 3칸이다.     
 <img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/cf1c1b58-fa6d-4231-8d13-72e40196597e" />
 
 ### 기능 목록 작성
