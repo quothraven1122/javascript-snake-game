@@ -17,7 +17,7 @@
   }
 }
 @media (max-width: 800px) {
-  .scoreBoard {
+  .readyBox {
     display: none;
   }
 }

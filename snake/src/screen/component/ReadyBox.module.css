@@ -1,8 +1,9 @@
-.scoreBoard {
+.readyBox {
   width: 150px;
-  height: 80px;
+  height: fit-content;
   border: 4px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 5px;
 }
