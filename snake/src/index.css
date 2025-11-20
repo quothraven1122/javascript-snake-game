@@ -24,6 +24,8 @@
   --gray-900: #28282d;
   --gray-900-transparent: #18181b33;
   --black: #18181b;
+  --blue: #9ae0f5;
+  --purple: #c9c2f9;
 
   /*box model*/
   --default-height: 600px;

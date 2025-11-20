@@ -11,11 +11,11 @@
   text-align: left;
   color: black;
 }
-.p1 {
+.me {
   margin-left: auto; /* push bubble to the right */
   background-color: white;
 }
-.p2 {
+.opponent {
   margin-right: auto; /* explicitly push left */
   background-color: var(--gray-100);
 }

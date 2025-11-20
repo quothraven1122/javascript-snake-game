@@ -15,9 +15,9 @@
 
 /* Colors */
 .purple {
-  background-color: #c9c2f9;
+  background-color: var(--purple);
 }
 
 .blue {
-  background-color: #9ae0f5;
+  background-color: var(--blue);
 }

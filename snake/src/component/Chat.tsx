@@ -3,12 +3,12 @@ import styles from "./Chat.module.css";
 
 interface Chat {
   text: string;
-  type: "p1" | "p2";
+  isMe: boolean;
 }
 
-export default function Chat({ text, type }: Chat) {
+export default function Chat({ text, isMe }: Chat) {
   return (
-    <div className={`${styles.chat} ${styles[type]}`}>
+    <div className={`${styles.chat} ${isMe ? styles.me : styles.opponent}`}>
       <p className={styles.text}>{text}</p>
     </div>
   );
