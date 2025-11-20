@@ -10,3 +10,9 @@
 .playerId {
   margin-top: 20px;
 }
+.purple {
+  color: var(--purple);
+}
+.blue {
+  color: var(--blue);
+}
