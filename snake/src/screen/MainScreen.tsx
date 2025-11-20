@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import ReadyBoard from "./component/ReadyBox";
 import Board from "./component/Board";
 import ChatBox from "./component/ChatBox";
@@ -7,8 +8,14 @@ import { useWebSocket } from "../hook/useWebSocket";
 import styles from "./MainScreen.module.css";
 
 export default function MainScreen() {
-  const { playerId, readyState, chatMessages, sendMessage, board } =
+  const { playerId, readyState, chatMessages, sendMessage, board, result } =
     useWebSocket();
+  const [showModal, setShowModal] = useState(result);
+  useEffect(() => {
+    if (result) {
+      setShowModal(true);
+    }
+  }, [result]);
 
   return (
     <div className={styles.mainScreen}>
@@ -26,6 +33,20 @@ export default function MainScreen() {
           className={styles.chatBox}
         />
       </div>
+      {showModal && (
+        <Modal
+          title={
+            result == "tie"
+              ? "동점입니다!"
+              : result == "p1"
+              ? "Player1이 우승했습니다!"
+              : "Player2가 우승했습니다!"
+          }
+          onClose={() => {
+            setShowModal(false);
+          }}
+        ></Modal>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useWS } from "../context/ws-context";
-import { GameData, BoardData, Snake } from "../data";
+import Modal from "../modal/Modal";
+import { BoardData } from "../data";
 
 export interface ChatMessage {
   playerId: string;
@@ -19,6 +20,7 @@ export function useWebSocket(): UseWebSocket {
   const ROWS = BoardData.ROWS;
   const COLS = BoardData.COLS;
   const wsRef = useWS()!;
+  const [result, setResult] = useState("");
   const [playerId, setPlayerId] = useState("");
   const [readyState, setReadyState] = useState({ p1: false, p2: false });
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -86,6 +88,9 @@ export function useWebSocket(): UseWebSocket {
         };
         updateBoard(snakes);
       }
+      if (data.type === "gameOver") {
+        setResult(data.result);
+      }
     };
 
     wsRef.current.onerror = (err) => console.error("WS error:", err);
@@ -117,5 +122,5 @@ export function useWebSocket(): UseWebSocket {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [wsRef]);
 
-  return { playerId, readyState, chatMessages, sendMessage, board };
+  return { playerId, readyState, chatMessages, sendMessage, board, result };
 }
