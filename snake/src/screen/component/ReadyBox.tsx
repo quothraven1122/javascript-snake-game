@@ -1,5 +1,3 @@
-import React from "react";
-
 import ReadyBar from "./ReadyBar";
 import styles from "./ReadyBox.module.css";
 

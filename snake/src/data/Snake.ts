@@ -4,7 +4,7 @@ interface Coordinate {
   x: number;
   y: number;
 }
-interface Snake extends Coordinate {
+interface SnakeInfo extends Coordinate {
   name: string;
 }
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
@@ -19,7 +19,7 @@ export class Snake {
   #boardCols = BoardData.COLS;
   #boardRows = BoardData.ROWS;
 
-  constructor(initialLength: number, snakeInfo: Snake) {
+  constructor(initialLength: number, snakeInfo: SnakeInfo) {
     const initialPosition = { x: snakeInfo.x, y: snakeInfo.y };
     this.body = [];
     for (let i = 0; i < initialLength; i++) {

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { useWS } from "../context/ws-context";
-import Modal from "../modal/Modal";
 import { BoardData } from "../data";
 
 export interface ChatMessage {
@@ -14,6 +13,7 @@ interface UseWebSocket {
   chatMessages: ChatMessage[];
   sendMessage: (msg: string) => void;
   board: number[][];
+  result: string;
 }
 
 export function useWebSocket(): UseWebSocket {

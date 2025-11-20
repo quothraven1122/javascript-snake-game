@@ -10,7 +10,7 @@ import styles from "./MainScreen.module.css";
 export default function MainScreen() {
   const { playerId, readyState, chatMessages, sendMessage, board, result } =
     useWebSocket();
-  const [showModal, setShowModal] = useState(result);
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     if (result) {
       setShowModal(true);

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./ReadyBar.module.css";
 interface ReadyBar {
   userName: string;

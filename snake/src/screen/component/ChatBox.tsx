@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Input from "../../component/Input";
 import styles from "./ChatBox.module.css";
