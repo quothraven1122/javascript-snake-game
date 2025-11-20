@@ -3,12 +3,15 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
+import { WSProvider } from "./context/ws-context";
 import MainScreen from "./screen/MainScreen";
 
 function App() {
   return (
     <div className="App">
-      <MainScreen />
+      <WSProvider>
+        <MainScreen />
+      </WSProvider>
     </div>
   );
 }

@@ -4,11 +4,12 @@ import Board from "./component/Board";
 import ChatBox from "./component/ChatBox";
 import Modal from "../modal/Modal";
 import { useGameLogic } from "../hook/useGameLogic";
+import { useWS } from "../context/ws-context";
 
 import styles from "./MainScreen.module.css";
 
 interface ChatMessage {
-  playerId: "string";
+  playerId: string;
   text: string;
 }
 
@@ -17,7 +18,7 @@ export default function MainScreen() {
   const [readyState, setReadyState] = useState({ p1: true, p2: false });
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const { ready, setReady, board } = useGameLogic("p2");
-  const wsRef = useRef<WebSocket | null>(null);
+  const wsRef = useWS()!;
 
   const handleSend = (input: string) => {
     if (!input.trim()) return;
@@ -29,10 +30,7 @@ export default function MainScreen() {
   };
 
   useEffect(() => {
-    wsRef.current = new WebSocket(
-      "wss://javascript-snake-game-server.onrender.com"
-      //"ws://localhost:3000"
-    );
+    if (!wsRef.current) return;
     wsRef.current.onopen = () => {
       console.log("connected to WS");
     };
@@ -60,7 +58,7 @@ export default function MainScreen() {
       console.log("WS CLOSED");
     };
     return () => wsRef.current?.close();
-  }, []);
+  }, [wsRef]);
 
   return (
     <div className={styles.mainScreen}>
