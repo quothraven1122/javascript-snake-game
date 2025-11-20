@@ -45,7 +45,13 @@ export default function MainScreen() {
           onClose={() => {
             setShowModal(false);
           }}
-        ></Modal>
+        >
+          {playerId === result ? (
+            <p className={styles.win}>WIN</p>
+          ) : (
+            <p className={styles.lose}>LOSE</p>
+          )}
+        </Modal>
       )}
     </div>
   );
