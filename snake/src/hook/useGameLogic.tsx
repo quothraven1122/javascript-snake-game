@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
+import { useWS } from "../context/ws-context";
 import { GameData, BoardData, Snake } from "../data";
 
 export function useGameLogic(player: string) {
+  const wsRef = useWS()!;
   const ROWS = BoardData.ROWS;
   const COLS = BoardData.COLS;
 
@@ -13,73 +15,76 @@ export function useGameLogic(player: string) {
     Array.from({ length: ROWS }, () => Array.from({ length: COLS }, () => 0))
   );
 
-  const updateBoard = useCallback(() => {
-    const newBoard = Array.from({ length: ROWS }, () =>
-      Array.from({ length: COLS }, () => 0)
-    );
+  //플레이어 움직임 중심으로 보드 상태 업데이트하기
+  const updateBoard = useCallback(
+    (snakes: Record<"p1" | "p2", Snake>) => {
+      const newBoard = Array.from({ length: ROWS }, () =>
+        Array.from({ length: COLS }, () => 0)
+      );
 
-    snake.body.forEach((coord) => {
-      if (coord.y >= 0 && coord.y < ROWS && coord.x >= 0 && coord.x < COLS) {
-        if (player === "p1") {
-          newBoard[coord.y][coord.x] = 1;
-        } else if (player === "p2") {
-          newBoard[coord.y][coord.x] = 2;
-        }
-      }
-    });
+      Object.entries(snakes).forEach(([p, s]) => {
+        s.body.forEach((coord) => {
+          if (
+            coord.y >= 0 &&
+            coord.y < ROWS &&
+            coord.x >= 0 &&
+            coord.x < COLS
+          ) {
+            newBoard[coord.y][coord.x] = p === "p1" ? 1 : 2;
+          }
+        });
+      });
 
-    setBoard(newBoard);
-  }, [snake.body, ROWS, COLS]);
+      setBoard(newBoard);
+    },
+    [ROWS, COLS]
+  );
 
+  // 서버로부터 게임 상태 듣기
   useEffect(() => {
-    updateBoard();
-  }, [updateBoard]);
+    if (!wsRef.current) return;
 
-  //Game Loop
-  useEffect(() => {
-    const gameSpeed = 200;
+    wsRef.current.onmessage = (msg) => {
+      const data = JSON.parse(msg.data);
 
-    const intervalId = setInterval(() => {
-      if (ready && !snake.isDead) {
-        // Update snake's state
-        snake.move();
-        // Re-render board
-        updateBoard();
+      if (data.type === "gameState") {
+        // 서버가 p1과 p2 위치를 알려줌
+        const snakes = {
+          p1: new Snake(GameData.size, data.p1),
+          p2: new Snake(GameData.size, data.p2),
+        };
+        setSnake(snakes[player]); // update local snake
+        updateBoard(snakes);
       }
-    }, gameSpeed);
 
-    return () => clearInterval(intervalId);
-  }, [snake, updateBoard, ready]);
-
-  // Input Handler to move snake
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "ArrowUp":
-        case "w":
-          snake.setDirection("UP");
-          break;
-        case "ArrowDown":
-        case "s":
-          snake.setDirection("DOWN");
-          break;
-        case "ArrowLeft":
-        case "a":
-          snake.setDirection("LEFT");
-          break;
-        case "ArrowRight":
-        case "d":
-          snake.setDirection("RIGHT");
-          break;
+      if (data.type === "ready") {
+        setReady(true);
       }
+    };
+  }, [player, wsRef, updateBoard]);
+
+  // 서버에 방향 인풋 보내주기
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      let dir: "UP" | "DOWN" | "LEFT" | "RIGHT" | null = null;
+
+      if (e.key === "ArrowUp") dir = "UP";
+      if (e.key === "ArrowDown") dir = "DOWN";
+      if (e.key === "ArrowLeft") dir = "LEFT";
+      if (e.key === "ArrowRight") dir = "RIGHT";
+      if (!dir) return;
+
+      wsRef.current?.send(
+        JSON.stringify({
+          type: "dir",
+          direction: dir,
+        })
+      );
     };
 
     window.addEventListener("keydown", handleKeyPress);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [snake]);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [wsRef]);
 
   return {
     ready,

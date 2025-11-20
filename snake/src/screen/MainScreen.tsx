@@ -1,16 +1,14 @@
-import { useState, useEffect, useRef } from "react";
 import ReadyBoard from "./component/ReadyBox";
 import Board from "./component/Board";
 import ChatBox from "./component/ChatBox";
 import Modal from "../modal/Modal";
-import { useGameLogic } from "../hook/useGameLogic";
 import { useWebSocket } from "../hook/useWebSocket";
 
 import styles from "./MainScreen.module.css";
 
 export default function MainScreen() {
-  const { playerId, readyState, chatMessages, sendMessage } = useWebSocket();
-  const { ready, setReady, board } = useGameLogic("p2");
+  const { playerId, readyState, chatMessages, sendMessage, board } =
+    useWebSocket();
 
   return (
     <div className={styles.mainScreen}>
