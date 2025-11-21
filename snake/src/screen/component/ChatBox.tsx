@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAutoScroll } from "../../hook/useScroll";
 
 import Input from "../../component/Input";
 import styles from "./ChatBox.module.css";
@@ -22,10 +23,16 @@ export default function ChatBox({
   className,
 }: ChatBox) {
   const [input, setInput] = useState("");
+  const { containerRef, autoScroll, scrollToBottom } =
+    useAutoScroll<HTMLDivElement>();
+
+  useEffect(() => {
+    if (autoScroll) scrollToBottom();
+  }, [messages, autoScroll]);
 
   return (
     <div className={`${styles.chatBox} ${className}`}>
-      <div className={styles.chatContainer}>
+      <div ref={containerRef} className={styles.chatContainer}>
         {messages.map((m, i) => (
           <Chat text={m.text} isMe={m.playerId === playerId} key={i} />
         ))}
