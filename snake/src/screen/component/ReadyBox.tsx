@@ -9,8 +9,8 @@ interface ReadyBox {
 
 export default function ReadyBox({ isReady, playerId, className }: ReadyBox) {
   return (
-    <div>
-      <div className={`${styles.readyBox} ${className}`}>
+    <div className={`${className}`}>
+      <div className={styles.readyBox}>
         <p>Ready</p>
         <ReadyBar userName={"Player1"} isReady={isReady.p1} />
         <ReadyBar userName={"Player2"} isReady={isReady.p2} />

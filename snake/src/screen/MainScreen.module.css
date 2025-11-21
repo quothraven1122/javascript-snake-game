@@ -7,8 +7,9 @@
   overflow: hidden;
 }
 .gameContainer {
-  height: fit-content;
+  flex: 1;
   display: flex;
+  justify-content: center;
   gap: 20px;
 }
 .win {
